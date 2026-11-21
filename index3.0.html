@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>METAS</title>
+<title>Mis metas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -142,11 +142,28 @@ h1::after{content:"";display:block;width:56px;height:2px;background:var(--gold);
 input[type=text],input[type=date],input[type=number]{border-radius:10px}
 input[type=text]:focus,input[type=date]:focus,input[type=number]:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
 label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight:700}
+form>div{min-width:0}
+form label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+form input{min-width:0}
+input[type=text],input[type=date],input[type=number]{height:48px}
+.abono button{white-space:nowrap}
+.abono button.sacar{background:transparent;color:var(--ink);border:1px solid var(--line)}
+@media (max-width:420px){.abono{flex-wrap:wrap}.abono input{flex:1 1 100%}.abono button{flex:1}}
+.tip{margin:0 0 10px;font-size:.88rem;line-height:1.4;color:var(--ink);background:var(--tint);border-radius:10px;padding:8px 12px}
+.hist{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+.hist summary{cursor:pointer;font-size:.88rem;font-weight:700;color:var(--muted)}
+.mini{display:flex;align-items:flex-end;gap:6px;height:56px;margin:12px 0}
+.mini i{flex:1;max-width:28px;display:block;background:var(--gold);border-radius:4px 4px 0 0}
+.mini i.neg{background:var(--late)}
+.movs{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.movs li{display:flex;justify-content:space-between;font-size:.88rem;color:var(--muted)}
+.movs b.pos{color:var(--ok)}
+.movs b.neg{color:var(--late)}
 </style>
 </head>
 <body>
 <main>
-  <h1>Mis metas</h1>
+  <h1>🎯 Mis metas</h1>
   <p class="sub">Escribe lo que quieres lograr y ponle fecha. Aquí te recuerdo qué sigue.</p>
 
   <section class="reminder calm" id="reminder" aria-live="polite"></section>
@@ -154,8 +171,8 @@ label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight
   <section class="motivo" id="motivo">
     <p class="msg" id="motivoMsg"></p>
     <div class="acts">
-      <button type="button" class="ghost" id="otro">Otro mensaje</button>
-      <button type="button" class="ghost" id="avisos">Activar avisos</button>
+      <button type="button" class="ghost" id="otro">🔄 Otro mensaje</button>
+      <button type="button" class="ghost" id="avisos">🔔 Activar avisos</button>
     </div>
     <p class="note" id="avisosNote" hidden></p>
   </section>
@@ -166,36 +183,36 @@ label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight
   </div>
 
   <section class="money" id="money" hidden aria-live="polite">
-    <h2 class="mtitle">Balance de dinero</h2>
+    <h2 class="mtitle">💰 Balance de dinero</h2>
     <p class="big" id="moneyBig"></p>
     <div class="bar money-bar"><i id="moneyBar"></i></div>
     <div class="row"><span id="moneyPct"></span><span id="moneyLeft"></span></div>
     <div class="bal">
-      <div><span>Total de tus metas</span><b id="balMeta"></b></div>
-      <div><span>Llevas</span><b id="balLlevo"></b></div>
-      <div><span>Te falta</span><b id="balFalta"></b></div>
+      <div><span>🎯 Total de tus metas</span><b id="balMeta"></b></div>
+      <div><span>💵 Llevas</span><b id="balLlevo"></b></div>
+      <div><span>⏳ Te falta</span><b id="balFalta"></b></div>
     </div>
   </section>
 
   <form id="form">
     <div class="full">
-      <label for="text">Nueva meta</label>
+      <label for="text">📝 Nueva meta</label>
     </div>
     <input type="text" id="text" placeholder="Ej: Terminar mi portafolio" maxlength="120" required style="grid-column:1/-1">
     <div>
-      <label for="date">Fecha límite (opcional)</label>
+      <label for="date">📅 Fecha límite</label>
       <input type="date" id="date">
     </div>
     <div>
-      <label for="target">Dinero a reunir (opcional)</label>
-      <input type="number" id="target" min="0" step="1000" inputmode="numeric" placeholder="Ej: 2000000">
+      <label for="target">💰 Dinero a reunir</label>
+      <input type="number" id="target" min="0" step="1000" inputmode="numeric" placeholder="Opcional">
     </div>
     <div class="full">
-      <label for="img">Imagen de motivación (opcional)</label>
+      <label for="img">🖼️ Imagen de motivación (opcional)</label>
       <input type="file" id="img" accept="image/*">
     </div>
     <p class="formnote full" id="formNote" hidden></p>
-    <button class="btn full" type="submit">Agregar meta</button>
+    <button class="btn full" type="submit">✨ Agregar meta</button>
   </form>
 
   <ul class="list" id="list"></ul>
@@ -227,7 +244,7 @@ label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight
     var open = goals.filter(function(g){return !g.done;});
     if(urgent.length){
       box.className = "reminder";
-      box.appendChild(el("h2",null,"¡Tú puedes con esto!"));
+      box.appendChild(el("h2",null,"🔥 ¡Tú puedes con esto!"));
       var first = urgent[0];
       box.appendChild(el("p","big",first.text));
       box.appendChild(el("p",null,when(daysLeft(first.date))+" · "+fmt(first.date)));
@@ -238,12 +255,12 @@ label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight
       }
     } else if(open.length){
       box.className = "reminder calm";
-      box.appendChild(el("h2",null,"Vas muy bien"));
+      box.appendChild(el("h2",null,"💪 Vas muy bien"));
       box.appendChild(el("p","big","Vas por buen camino. ¡Sigue avanzando!"));
       box.appendChild(el("p",null,"Tienes "+open.length+(open.length===1?" meta abierta.":" metas abiertas.")));
     } else {
       box.className = "reminder calm";
-      box.appendChild(el("h2",null,goals.length?"¡Lo lograste!":"Tu primer paso"));
+      box.appendChild(el("h2",null,goals.length?"🎉 ¡Lo lograste!":"🚀 Tu primer paso"));
       box.appendChild(el("p","big",goals.length?"¡Cumpliste todas tus metas! Ponte una nueva y sigue creciendo.":"Todo gran logro empieza con una meta. ¡Escribe la tuya y arranca hoy!"));
     }
   }
@@ -258,6 +275,7 @@ label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight
 
   function cop(n){ return "$"+Math.round(n).toLocaleString("es-CO"); }
   function pctOf(a,b){ return b>0 ? Math.max(0, Math.min(100, Math.round(a/b*100))) : 0; }
+  var openHist = {};
   function moneyBlock(g){
     var saved = g.saved||0, left = Math.max(0, g.target-saved), p = pctOf(saved,g.target);
     var box = el("div","gmoney");
@@ -266,20 +284,58 @@ label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight
     row.appendChild(el("span",null,"Llevas "+cop(saved)+" de "+cop(g.target)+" ("+p+"%)"));
     row.appendChild(el("span",null,left>0?"Faltan "+cop(left):"Dinero reunido"));
     var wrap = el("div","abono");
-    var inp = el("input"); inp.type="number"; inp.step="1000"; inp.inputMode="numeric"; inp.placeholder="Monto a abonar"; inp.setAttribute("aria-label","Monto a abonar a: "+g.text);
-    var btn = el("button",null,"Abonar"); btn.type="button";
-    function add(){ var v=Number(inp.value); if(!v) return; g.saved=Math.max(0,(g.saved||0)+v); save(); render(); }
+    var inp = el("input"); inp.type="number"; inp.step="1000"; inp.inputMode="numeric"; inp.placeholder="Monto"; inp.setAttribute("aria-label","Monto a abonar o sacar en: "+g.text);
+    var btn = el("button",null,"➕ Abonar"); btn.type="button";
+    var out = el("button","sacar","➖ Sacar"); out.type="button";
+    function mover(signo){ var v=Math.abs(Number(inp.value)); if(!v) return; var antes=g.saved||0, despues=Math.max(0,antes+signo*v); if(despues===antes) return; g.saved=despues; if(!Array.isArray(g.hist)) g.hist=[]; g.hist.push({d:Date.now(), v:despues-antes}); if(g.hist.length>60) g.hist=g.hist.slice(-60); save(); render(); }
+    function add(){ mover(1); }
     btn.addEventListener("click",add);
+    out.addEventListener("click",function(){ mover(-1); });
     inp.addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); add(); } });
-    wrap.appendChild(inp); wrap.appendChild(btn);
-    box.appendChild(bar); box.appendChild(row); box.appendChild(wrap);
+    wrap.appendChild(inp); wrap.appendChild(btn); wrap.appendChild(out);
+    box.appendChild(bar); box.appendChild(row);
+    if(left>0 && g.date && !g.done){
+      var nd = daysLeft(g.date), tip;
+      if(nd>0){
+        var dia = Math.ceil(left/nd), sem = Math.ceil(left/(nd/7));
+        tip = nd>=7 ? "💡 Para llegar a tiempo: ahorra "+cop(sem)+" por semana (≈ "+cop(dia)+" por día)" : "💡 Para llegar a tiempo: ahorra "+cop(dia)+" por día";
+      } else {
+        tip = "⏰ La fecha límite ya llegó. ¡Último empujón, te faltan "+cop(left)+"!";
+      }
+      box.appendChild(el("p","tip",tip));
+    }
+    box.appendChild(wrap);
+    var hist = Array.isArray(g.hist) ? g.hist : [];
+    if(hist.length){
+      var det = el("details","hist");
+      det.appendChild(el("summary",null,"📊 Historial de movimientos ("+hist.length+")"));
+      var last = hist.slice(-8), mx = Math.max.apply(null, last.map(function(h){return Math.abs(h.v);}));
+      var ch = el("div","mini");
+      last.forEach(function(h){
+        var b = el("i", h.v<0?"neg":""); b.style.height = Math.max(10, Math.round(Math.abs(h.v)/mx*100))+"%";
+        b.title = new Date(h.d).toLocaleDateString("es-CO",{day:"numeric",month:"short"})+": "+(h.v<0?"-":"+")+cop(Math.abs(h.v));
+        ch.appendChild(b);
+      });
+      det.appendChild(ch);
+      var ml = el("ul","movs");
+      hist.slice().reverse().slice(0,10).forEach(function(h){
+        var li2 = el("li");
+        li2.appendChild(el("span",null,new Date(h.d).toLocaleDateString("es-CO",{day:"numeric",month:"short",year:"numeric"})));
+        li2.appendChild(el("b",h.v<0?"neg":"pos",(h.v<0?"➖ ":"➕ ")+cop(Math.abs(h.v))));
+        ml.appendChild(li2);
+      });
+      det.appendChild(ml);
+      det.open = !!openHist[g.id];
+      det.addEventListener("toggle",function(){ openHist[g.id] = det.open; });
+      box.appendChild(det);
+    }
     return box;
   }
 
   function renderList(){
     var ul = document.getElementById("list");
     ul.innerHTML = "";
-    if(!goals.length){ ul.appendChild(el("li","empty","Todavía no hay metas. Escribe una arriba y agrégala.")); return; }
+    if(!goals.length){ ul.appendChild(el("li","empty","🌱 Todavía no hay metas. Escribe una arriba y agrégala.")); return; }
     var sorted = goals.slice().sort(function(a,b){
       if(a.done!==b.done) return a.done?1:-1;
       if(a.date && b.date) return a.date<b.date?-1:1;
@@ -291,12 +347,12 @@ label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight
       cb.addEventListener("change",function(){ g.done=cb.checked; save(); render(); });
       var mid = el("div");
       mid.appendChild(el("div","t",g.text));
-      if(g.done){ mid.appendChild(el("span","tag ok","Cumplida")); }
+      if(g.done){ mid.appendChild(el("span","tag ok","✅ Cumplida")); }
       else if(g.date){
         var n = daysLeft(g.date);
-        mid.appendChild(el("span","tag"+(n<0?" late":n<=3?" soon":""), when(n)+" · "+fmt(g.date)));
-      } else { mid.appendChild(el("span","tag","Sin fecha")); }
-      var del = el("button","del","Borrar"); del.type="button"; del.setAttribute("aria-label","Borrar meta: "+g.text);
+        mid.appendChild(el("span","tag"+(n<0?" late":n<=3?" soon":""), (n<0?"⚠️ ":n<=3?"⏳ ":"📅 ")+when(n)+" · "+fmt(g.date)));
+      } else { mid.appendChild(el("span","tag","🗓️ Sin fecha")); }
+      var del = el("button","del","🗑️ Borrar"); del.type="button"; del.setAttribute("aria-label","Borrar meta: "+g.text);
       del.addEventListener("click",function(){ goals = goals.filter(function(x){return x.id!==g.id;}); save(); render(); });
       if(g.img){ var im = el("img","gimg"); im.src = g.img; im.alt = "Imagen de motivación: "+g.text; li.appendChild(im); }
       li.appendChild(cb); li.appendChild(mid); li.appendChild(del);
@@ -364,7 +420,7 @@ label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight
   function setNote(t){ avisosNote.textContent = t; avisosNote.hidden = !t; }
   function aviso(texto){ try { new Notification("Tus metas", {body:texto}); } catch(e){} }
   function iniciarAvisos(){
-    avisosBtn.textContent = "Desactivar avisos";
+    avisosBtn.textContent = "🔕 Desactivar avisos";
     setNote("Avisos activos: te llega un mensaje cada hora mientras tengas la página abierta.");
     aviso(frase());
     clearInterval(timer);
@@ -373,7 +429,7 @@ label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight
   function pararAvisos(){
     clearInterval(timer); timer = null;
     try { localStorage.removeItem("metas-avisos"); } catch(e){}
-    avisosBtn.textContent = "Activar avisos";
+    avisosBtn.textContent = "🔔 Activar avisos";
     setNote("");
   }
   function activarAvisos(){
