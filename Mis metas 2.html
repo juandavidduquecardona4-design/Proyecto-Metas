@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mis metas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F3FB; --surface:#FFFFFF; --ink:#3B3552; --muted:#6F6A88; --line:#E6E0F2; --gold:#F0A58B; --tint:#E9E3F8;
+  --accent:#7664B8; --accent-ink:#FFFFFF; --soon:#9A5B00; --soon-bg:#FFEBDD; --late:#B3384A; --late-bg:#FDE3E8; --ok:#3E8E6A;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1C1930; --surface:#26223F; --ink:#EEEAF8; --muted:#A9A3C4; --line:#38325A; --gold:#F4B49C; --tint:#312B55;
+    --accent:#B6A6F2; --accent-ink:#1C1930; --soon:#F2B98A; --soon-bg:#3A2B22; --late:#FF9DAE; --late-bg:#3F2030; --ok:#7FD1A6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1C1930; --surface:#26223F; --ink:#EEEAF8; --muted:#A9A3C4; --line:#38325A; --gold:#F4B49C; --tint:#312B55;
+  --accent:#B6A6F2; --accent-ink:#1C1930; --soon:#F2B98A; --soon-bg:#3A2B22; --late:#FF9DAE; --late-bg:#3F2030; --ok:#7FD1A6;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+main{max-width:640px;margin:0 auto;padding:28px 18px 60px}
+h1{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:clamp(2.3rem,9vw,3.1rem);font-weight:600;letter-spacing:-.01em;line-height:1.05;margin:0 0 10px}
+.sub{color:var(--muted);margin:0 0 24px}
+
+.reminder{border-radius:24px;padding:22px;background:var(--tint);color:var(--ink);margin-bottom:20px}
+.reminder h2{margin:0 0 4px;font-size:1.05rem;font-weight:600;opacity:.8}
+.reminder .big{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:clamp(1.5rem,5.5vw,2rem);font-weight:600;line-height:1.2;margin:0}
+.reminder p{margin:6px 0 0;opacity:.85}
+.reminder ul{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+.reminder li{font-size:.95rem;opacity:.9}
+.reminder.calm{background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:0 6px 18px rgba(90,70,150,.08)}
+
+.progress{margin:0 0 22px}
+.progress .row{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted);margin-bottom:6px}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:var(--ok);border-radius:99px;transition:width .3s}
+
+form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:26px}
+form .full{grid-column:1/-1}
+label{font-size:.85rem;color:var(--muted);display:block;margin-bottom:4px}
+input[type=text],input[type=date],input[type=number]{width:100%;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+input:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.btn{font:inherit;font-weight:600;border:0;border-radius:99px;padding:12px 22px;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+
+.list{display:grid;gap:10px;padding:0;margin:0;list-style:none}
+.goal{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 6px 18px rgba(90,70,150,.08)}
+.goal input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);cursor:pointer}
+.goal .t{font-weight:600;overflow-wrap:anywhere}
+.goal.done .t{text-decoration:line-through;color:var(--muted)}
+.tag{display:inline-block;margin-top:4px;font-size:.82rem;padding:2px 10px;border-radius:99px;background:var(--bg);color:var(--muted)}
+.tag.soon{background:var(--soon-bg);color:var(--soon)}
+.tag.late{background:var(--late-bg);color:var(--late)}
+.tag.ok{color:var(--ok)}
+.del{font:inherit;background:none;border:0;color:var(--muted);cursor:pointer;padding:8px;border-radius:8px}
+.del:hover{color:var(--late)}
+.empty{color:var(--muted);text-align:center;padding:26px 10px;border:1px dashed var(--line);border-radius:14px}
+.money{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:18px 20px;margin:0 0 20px;box-shadow:0 6px 18px rgba(90,70,150,.08)}
+.money[hidden]{display:none}
+.money .big{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:1.6rem;font-weight:600;line-height:1.2;margin:0 0 10px;overflow-wrap:anywhere}
+.money .row{display:flex;justify-content:space-between;font-size:.9rem;color:var(--muted);margin-top:8px;gap:8px;flex-wrap:wrap}
+.bar.money-bar>i{background:var(--gold)}
+.gmoney{grid-column:1/-1;border-top:1px solid var(--line);padding-top:10px}
+.gmoney .row{display:flex;justify-content:space-between;font-size:.88rem;color:var(--muted);margin:8px 0 10px;gap:8px;flex-wrap:wrap}
+.abono{display:flex;gap:8px}
+.abono input{flex:1;min-width:0;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.abono button{font:inherit;font-weight:600;border:0;border-radius:10px;padding:8px 14px;background:var(--accent);color:var(--accent-ink);cursor:pointer}
+.motivo{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:18px 20px;margin:0 0 20px;box-shadow:0 6px 18px rgba(90,70,150,.08)}
+.motivo .msg{font-family:Fredoka,Nunito,system-ui,sans-serif;font-size:1.25rem;font-weight:500;line-height:1.35;margin:0 0 14px}
+.motivo .acts{display:flex;gap:8px;flex-wrap:wrap}
+.motivo .note{font-size:.85rem;color:var(--muted);margin:10px 0 0}
+.motivo .note[hidden]{display:none}
+.ghost{font:inherit;font-weight:600;font-size:.9rem;background:var(--tint);color:var(--ink);border:1px solid transparent;border-radius:99px;padding:8px 16px;cursor:pointer}
+.ghost:hover{border-color:var(--accent)}
+input[type=file]{width:100%;font:inherit;font-size:.9rem;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:10px}
+.formnote{color:var(--late);font-size:.88rem;margin:0}
+.formnote[hidden]{display:none}
+.gimg{grid-column:1/-1;width:100%;max-height:220px;object-fit:cover;border-radius:14px;display:block}
+.money .mtitle{margin:0 0 6px;font-size:.95rem;font-weight:600;color:var(--muted)}
+.bal{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.bal div{display:grid;gap:2px;min-width:0}
+.bal span{font-size:.8rem;color:var(--muted)}
+.bal b{font-size:.95rem;overflow-wrap:anywhere}
+@media (max-width:420px){.bal{grid-template-columns:1fr}.bal div{grid-auto-flow:column;justify-content:space-between}}
+@media (prefers-reduced-motion:reduce){.bar>i{transition:none}}
+:root{
+  --bg:#F6F4EF; --surface:#FFFFFF; --ink:#10231C; --muted:#667770; --line:#E3DED1; --tint:#EAF0EC;
+  --accent:#0F5C47; --accent-ink:#FFFFFF; --gold:#A8832F; --ok:#1E7A55;
+  --soon:#8A5A00; --soon-bg:#F7ECD0; --late:#A5312A; --late-bg:#F8E1DE;
+  --shadow:0 1px 0 rgba(16,35,28,.04),0 14px 32px -20px rgba(16,35,28,.35);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B1512; --surface:#12211C; --ink:#EDEBE4; --muted:#93A39A; --line:#243630; --tint:#1B2F28;
+    --accent:#C9A85C; --accent-ink:#0B1512; --gold:#C9A85C; --ok:#6FCF9F;
+    --soon:#E3B85F; --soon-bg:#33290F; --late:#F29A91; --late-bg:#3A1E1B;
+    --shadow:0 14px 32px -20px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B1512; --surface:#12211C; --ink:#EDEBE4; --muted:#93A39A; --line:#243630; --tint:#1B2F28;
+  --accent:#C9A85C; --accent-ink:#0B1512; --gold:#C9A85C; --ok:#6FCF9F;
+  --soon:#E3B85F; --soon-bg:#33290F; --late:#F29A91; --late-bg:#3A1E1B;
+  --shadow:0 14px 32px -20px rgba(0,0,0,.7);
+}
+body{font-family:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:500}
+main{padding-top:40px}
+h1{font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;font-weight:600;font-size:clamp(2.8rem,10vw,4rem);letter-spacing:-.01em;line-height:1}
+h1::after{content:"";display:block;width:56px;height:2px;background:var(--gold);margin-top:16px}
+.sub{margin-top:16px;font-size:.98rem}
+.reminder,.motivo,.money{border-radius:12px}
+.reminder,.reminder.calm,.motivo,.money,.goal{box-shadow:var(--shadow)}
+.reminder:not(.calm){background:linear-gradient(135deg,#0F2A22,#18433A);color:#F3EFE4;border:0}
+.reminder h2{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:1;color:#D4B56A}
+.reminder.calm h2{color:var(--gold)}
+.reminder .big,.money .big{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;letter-spacing:0;font-size:clamp(1.8rem,6vw,2.4rem);line-height:1.1}
+.money .big{font-size:1.8rem}
+.money .mtitle{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.bal b{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.25rem;font-weight:600}
+.motivo{border-left:3px solid var(--gold)}
+.motivo .msg{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-weight:600;font-size:1.45rem;line-height:1.3}
+.bar{height:6px}
+.bar>i{background:var(--accent)}
+.bar.money-bar>i{background:var(--gold)}
+.btn{border-radius:10px;letter-spacing:.05em;font-size:.9rem;text-transform:uppercase;padding:14px 18px}
+.ghost{font-size:.85rem}
+.goal{border-radius:14px;padding:16px}
+.tag{border:1px solid var(--line);background:transparent}
+.tag.soon{border-color:transparent;background:var(--soon-bg)}
+.tag.late{border-color:transparent;background:var(--late-bg)}
+input[type=text],input[type=date],input[type=number]{border-radius:10px}
+input[type=text]:focus,input[type=date]:focus,input[type=number]:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+label{letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;font-weight:700}
+</style>
+</head>
+<body>
+<main>
+  <h1>Mis metas</h1>
+  <p class="sub">Escribe lo que quieres lograr y ponle fecha. Aquí te recuerdo qué sigue.</p>
+
+  <section class="reminder calm" id="reminder" aria-live="polite"></section>
+
+  <section class="motivo" id="motivo">
+    <p class="msg" id="motivoMsg"></p>
+    <div class="acts">
+      <button type="button" class="ghost" id="otro">Otro mensaje</button>
+      <button type="button" class="ghost" id="avisos">Activar avisos</button>
+    </div>
+    <p class="note" id="avisosNote" hidden></p>
+  </section>
+
+  <div class="progress">
+    <div class="row"><span id="progText">0 de 0 cumplidas</span><span id="progPct">0%</span></div>
+    <div class="bar"><i id="progBar"></i></div>
+  </div>
+
+  <section class="money" id="money" hidden aria-live="polite">
+    <h2 class="mtitle">Balance de dinero</h2>
+    <p class="big" id="moneyBig"></p>
+    <div class="bar money-bar"><i id="moneyBar"></i></div>
+    <div class="row"><span id="moneyPct"></span><span id="moneyLeft"></span></div>
+    <div class="bal">
+      <div><span>Total de tus metas</span><b id="balMeta"></b></div>
+      <div><span>Llevas</span><b id="balLlevo"></b></div>
+      <div><span>Te falta</span><b id="balFalta"></b></div>
+    </div>
+  </section>
+
+  <form id="form">
+    <div class="full">
+      <label for="text">Nueva meta</label>
+    </div>
+    <input type="text" id="text" placeholder="Ej: Terminar mi portafolio" maxlength="120" required style="grid-column:1/-1">
+    <div>
+      <label for="date">Fecha límite (opcional)</label>
+      <input type="date" id="date">
+    </div>
+    <div>
+      <label for="target">Dinero a reunir (opcional)</label>
+      <input type="number" id="target" min="0" step="1000" inputmode="numeric" placeholder="Ej: 2000000">
+    </div>
+    <div class="full">
+      <label for="img">Imagen de motivación (opcional)</label>
+      <input type="file" id="img" accept="image/*">
+    </div>
+    <p class="formnote full" id="formNote" hidden></p>
+    <button class="btn full" type="submit">Agregar meta</button>
+  </form>
+
+  <ul class="list" id="list"></ul>
+</main>
+
+<script>
+(function(){
+  var KEY = "metas-v1";
+  var goals = [];
+  try { goals = JSON.parse(localStorage.getItem(KEY) || "[]"); if(!Array.isArray(goals)) goals = []; } catch(e){ goals = []; }
+
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(goals)); return true; } catch(e){ return false; } }
+  function todayStr(){ var d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+  function daysLeft(s){ var a=new Date(todayStr()+"T00:00:00"), b=new Date(s+"T00:00:00"); return Math.round((b-a)/86400000); }
+  function fmt(s){ return new Date(s+"T00:00:00").toLocaleDateString("es-CO",{day:"numeric",month:"short",year:"numeric"}); }
+  function when(n){
+    if(n<0) return "Vencida hace "+(-n)+(n===-1?" día":" días");
+    if(n===0) return "Es hoy";
+    if(n===1) return "Es mañana";
+    return "Faltan "+n+" días";
+  }
+  function el(tag, cls, txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!==undefined) e.textContent=txt; return e; }
+
+  function renderReminder(){
+    var box = document.getElementById("reminder");
+    box.innerHTML = "";
+    var pending = goals.filter(function(g){return !g.done && g.date;}).sort(function(a,b){return a.date<b.date?-1:1;});
+    var urgent = pending.filter(function(g){return daysLeft(g.date)<=3;});
+    var open = goals.filter(function(g){return !g.done;});
+    if(urgent.length){
+      box.className = "reminder";
+      box.appendChild(el("h2",null,"¡Tú puedes con esto!"));
+      var first = urgent[0];
+      box.appendChild(el("p","big",first.text));
+      box.appendChild(el("p",null,when(daysLeft(first.date))+" · "+fmt(first.date)));
+      if(urgent.length>1){
+        var ul = el("ul");
+        urgent.slice(1).forEach(function(g){ ul.appendChild(el("li",null,g.text+" — "+when(daysLeft(g.date)).toLowerCase())); });
+        box.appendChild(ul);
+      }
+    } else if(open.length){
+      box.className = "reminder calm";
+      box.appendChild(el("h2",null,"Vas muy bien"));
+      box.appendChild(el("p","big","Vas por buen camino. ¡Sigue avanzando!"));
+      box.appendChild(el("p",null,"Tienes "+open.length+(open.length===1?" meta abierta.":" metas abiertas.")));
+    } else {
+      box.className = "reminder calm";
+      box.appendChild(el("h2",null,goals.length?"¡Lo lograste!":"Tu primer paso"));
+      box.appendChild(el("p","big",goals.length?"¡Cumpliste todas tus metas! Ponte una nueva y sigue creciendo.":"Todo gran logro empieza con una meta. ¡Escribe la tuya y arranca hoy!"));
+    }
+  }
+
+  function renderProgress(){
+    var done = goals.filter(function(g){return g.done;}).length, total = goals.length;
+    var pct = total ? Math.round(done/total*100) : 0;
+    document.getElementById("progText").textContent = done+" de "+total+" cumplidas";
+    document.getElementById("progPct").textContent = pct+"%";
+    document.getElementById("progBar").style.width = pct+"%";
+  }
+
+  function cop(n){ return "$"+Math.round(n).toLocaleString("es-CO"); }
+  function pctOf(a,b){ return b>0 ? Math.max(0, Math.min(100, Math.round(a/b*100))) : 0; }
+  function moneyBlock(g){
+    var saved = g.saved||0, left = Math.max(0, g.target-saved), p = pctOf(saved,g.target);
+    var box = el("div","gmoney");
+    var bar = el("div","bar money-bar"), fill = el("i"); fill.style.width = p+"%"; bar.appendChild(fill);
+    var row = el("div","row");
+    row.appendChild(el("span",null,"Llevas "+cop(saved)+" de "+cop(g.target)+" ("+p+"%)"));
+    row.appendChild(el("span",null,left>0?"Faltan "+cop(left):"Dinero reunido"));
+    var wrap = el("div","abono");
+    var inp = el("input"); inp.type="number"; inp.step="1000"; inp.inputMode="numeric"; inp.placeholder="Monto a abonar"; inp.setAttribute("aria-label","Monto a abonar a: "+g.text);
+    var btn = el("button",null,"Abonar"); btn.type="button";
+    function add(){ var v=Number(inp.value); if(!v) return; g.saved=Math.max(0,(g.saved||0)+v); save(); render(); }
+    btn.addEventListener("click",add);
+    inp.addEventListener("keydown",function(e){ if(e.key==="Enter"){ e.preventDefault(); add(); } });
+    wrap.appendChild(inp); wrap.appendChild(btn);
+    box.appendChild(bar); box.appendChild(row); box.appendChild(wrap);
+    return box;
+  }
+
+  function renderList(){
+    var ul = document.getElementById("list");
+    ul.innerHTML = "";
+    if(!goals.length){ ul.appendChild(el("li","empty","Todavía no hay metas. Escribe una arriba y agrégala.")); return; }
+    var sorted = goals.slice().sort(function(a,b){
+      if(a.done!==b.done) return a.done?1:-1;
+      if(a.date && b.date) return a.date<b.date?-1:1;
+      if(a.date) return -1; if(b.date) return 1; return a.id-b.id;
+    });
+    sorted.forEach(function(g){
+      var li = el("li","goal"+(g.done?" done":""));
+      var cb = el("input"); cb.type="checkbox"; cb.checked=g.done; cb.setAttribute("aria-label","Marcar como cumplida: "+g.text);
+      cb.addEventListener("change",function(){ g.done=cb.checked; save(); render(); });
+      var mid = el("div");
+      mid.appendChild(el("div","t",g.text));
+      if(g.done){ mid.appendChild(el("span","tag ok","Cumplida")); }
+      else if(g.date){
+        var n = daysLeft(g.date);
+        mid.appendChild(el("span","tag"+(n<0?" late":n<=3?" soon":""), when(n)+" · "+fmt(g.date)));
+      } else { mid.appendChild(el("span","tag","Sin fecha")); }
+      var del = el("button","del","Borrar"); del.type="button"; del.setAttribute("aria-label","Borrar meta: "+g.text);
+      del.addEventListener("click",function(){ goals = goals.filter(function(x){return x.id!==g.id;}); save(); render(); });
+      if(g.img){ var im = el("img","gimg"); im.src = g.img; im.alt = "Imagen de motivación: "+g.text; li.appendChild(im); }
+      li.appendChild(cb); li.appendChild(mid); li.appendChild(del);
+      if(g.target>0){ li.appendChild(moneyBlock(g)); }
+      ul.appendChild(li);
+    });
+  }
+
+  function renderMoney(){
+    var withT = goals.filter(function(g){return g.target>0;});
+    var box = document.getElementById("money");
+    if(!withT.length){ box.hidden = true; return; }
+    var target = withT.reduce(function(s,g){return s+g.target;},0);
+    var saved = withT.reduce(function(s,g){return s+(g.done?g.target:Math.min(g.saved||0,g.target));},0);
+    var left = target-saved, p = pctOf(saved,target);
+    box.hidden = false;
+    document.getElementById("moneyBig").textContent = left>0 ? "Te faltan "+cop(left) : "No te falta nada";
+    document.getElementById("balMeta").textContent = cop(target);
+    document.getElementById("balLlevo").textContent = cop(saved);
+    document.getElementById("balFalta").textContent = cop(left);
+    document.getElementById("moneyBar").style.width = p+"%";
+    document.getElementById("moneyPct").textContent = p+"% reunido";
+    document.getElementById("moneyLeft").textContent = withT.length+(withT.length===1?" meta con dinero":" metas con dinero");
+  }
+
+  function render(){ renderReminder(); renderProgress(); renderMoney(); renderList(); }
+
+  var FRASES = [
+    "¡Tú puedes! Hoy das un paso más hacia {meta}.",
+    "Cada abono te acerca a {meta}. ¡No pares ahora!",
+    "Estás más cerca de {meta} que ayer. ¡Sigue así!",
+    "Lo que hoy cuesta esfuerzo, mañana se siente como orgullo.",
+    "Nadie te regaló la meta, y por eso cuando la logres será tuya de verdad.",
+    "¡Vamos con toda por {meta}! Un día a la vez.",
+    "Ya empezaste, y eso es lo más difícil. Ahora solo toca seguir.",
+    "Tu yo del futuro está esperando que hoy no te rindas.",
+    "Cada peso que guardas es un voto de confianza en ti mismo.",
+    "No te compares con nadie: compárate con quien eras cuando empezaste.",
+    "Las metas grandes se logran con días normales bien aprovechados.",
+    "Hoy es un gran día para acercarte a {meta}. ¡Arranca ya!",
+    "Tienes todo lo necesario para lograrlo. Solo falta que sigas.",
+    "Cuando te dé pereza, acuérdate por qué empezaste."
+  ];
+  function metaActual(){
+    var abiertas = goals.filter(function(g){return !g.done;}).sort(function(a,b){
+      if(a.date && b.date) return a.date<b.date?-1:1;
+      if(a.date) return -1; if(b.date) return 1; return a.id-b.id;
+    });
+    return abiertas.length ? "“"+abiertas[0].text+"”" : "tu meta";
+  }
+  function frase(){
+    var last = -1;
+    try { var s = localStorage.getItem("metas-frase"); if(s!==null) last = Number(s); } catch(e){}
+    var i;
+    do { i = Math.floor(Math.random()*FRASES.length); } while(i===last && FRASES.length>1);
+    try { localStorage.setItem("metas-frase", String(i)); } catch(e){}
+    return FRASES[i].replace("{meta}", metaActual());
+  }
+  var msgEl = document.getElementById("motivoMsg");
+  function nuevaFrase(){ msgEl.textContent = frase(); }
+  nuevaFrase();
+  document.getElementById("otro").addEventListener("click", nuevaFrase);
+
+  var avisosBtn = document.getElementById("avisos"), avisosNote = document.getElementById("avisosNote"), timer = null;
+  function setNote(t){ avisosNote.textContent = t; avisosNote.hidden = !t; }
+  function aviso(texto){ try { new Notification("Tus metas", {body:texto}); } catch(e){} }
+  function iniciarAvisos(){
+    avisosBtn.textContent = "Desactivar avisos";
+    setNote("Avisos activos: te llega un mensaje cada hora mientras tengas la página abierta.");
+    aviso(frase());
+    clearInterval(timer);
+    timer = setInterval(function(){ aviso(frase()); }, 3600000);
+  }
+  function pararAvisos(){
+    clearInterval(timer); timer = null;
+    try { localStorage.removeItem("metas-avisos"); } catch(e){}
+    avisosBtn.textContent = "Activar avisos";
+    setNote("");
+  }
+  function activarAvisos(){
+    if(!("Notification" in window)){ setNote("Este navegador no permite avisos. Verás un mensaje nuevo cada vez que abras la página."); return; }
+    var r;
+    try { r = Notification.requestPermission(); } catch(e){ setNote("No se pudo pedir el permiso de avisos en este navegador."); return; }
+    Promise.resolve(r).then(function(p){
+      if(p!=="granted"){ setNote("No diste permiso para los avisos. Puedes activarlos en los ajustes del navegador."); return; }
+      try { localStorage.setItem("metas-avisos", "1"); } catch(e){}
+      iniciarAvisos();
+    });
+  }
+  avisosBtn.addEventListener("click", function(){ if(timer){ pararAvisos(); } else { activarAvisos(); } });
+  try {
+    if(localStorage.getItem("metas-avisos")==="1" && "Notification" in window && Notification.permission==="granted"){ iniciarAvisos(); }
+  } catch(e){}
+
+  function formNote(txt){ var n = document.getElementById("formNote"); n.textContent = txt; n.hidden = !txt; }
+  function reducirImagen(file, cb){
+    var reader = new FileReader();
+    reader.onerror = function(){ cb(""); };
+    reader.onload = function(){
+      var img = new Image();
+      img.onerror = function(){ cb(""); };
+      img.onload = function(){
+        var max = 700, k = Math.min(1, max/Math.max(img.width, img.height));
+        var c = document.createElement("canvas");
+        c.width = Math.max(1, Math.round(img.width*k)); c.height = Math.max(1, Math.round(img.height*k));
+        var url = "";
+        try { c.getContext("2d").drawImage(img, 0, 0, c.width, c.height); url = c.toDataURL("image/jpeg", 0.72); } catch(e){}
+        cb(url);
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  document.getElementById("form").addEventListener("submit",function(e){
+    e.preventDefault();
+    var t = document.getElementById("text"), d = document.getElementById("date"), m = document.getElementById("target"), f = document.getElementById("img");
+    var txt = t.value.trim(); if(!txt) return;
+    var nueva = {id:Date.now(), text:txt, date:d.value||"", done:false, target:Math.max(0, Number(m.value)||0), saved:0, img:""};
+    var quiso = !!(f.files && f.files[0]);
+    function listo(){
+      goals.push(nueva);
+      var msg = "";
+      if(!save() && nueva.img){ nueva.img = ""; save(); msg = "La meta se guardó sin imagen: ya no hay espacio en este navegador. Prueba con una imagen más pequeña."; }
+      else if(quiso && !nueva.img){ msg = "No se pudo leer la imagen, así que la meta se guardó sin ella."; }
+      formNote(msg);
+      t.value=""; d.value=""; m.value=""; f.value=""; render(); t.focus();
+    }
+    if(quiso){ reducirImagen(f.files[0], function(url){ nueva.img = url; listo(); }); } else { listo(); }
+    return;
+    
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
